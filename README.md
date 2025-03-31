@@ -16,6 +16,11 @@ python3 manage.py runserver
 ```bash
 python manage.py runserver
 ```
+
+## Credentials
+- Username : sanjithm
+- Password : admin
+  
 ## Output
 Website is opened in your local-port
 
