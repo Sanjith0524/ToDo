@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Connect Google Calendar - Todo Calendar{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col">
+        <h1>Connect to Google Calendar</h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Authorization Required</h5>
+        
+        <p class="card-text">
+            To sync your tasks with Google Calendar, you need to authorize this application.
+            Please follow these steps:
+        </p>
+        
+        <ol class="mb-4">
+            <li class="mb-2">Click the link below to open Google's authorization page.</li>
+            <li class="mb-2">Sign in with your Google account and grant the requested permissions.</li>
+            <li class="mb-2">Copy the authorization code provided by Google.</li>
+            <li class="mb-2">Paste the code in the field below and submit.</li>
+        </ol>
+        
+        <div class="d-grid gap-2 mb-4">
+            <a href="{{ auth_url }}" target="_blank" class="btn btn-primary">
+                Open Google Authorization Page
+            </a>
+        </div>
+        
+        <form method="post" action="{% url 'google-callback' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="auth_code" class="form-label">Authorization Code</label>
+                <input type="text" class="form-control" id="auth_code" name="auth_code" required>
+                <div class="form-text">Paste the code from Google here</div>
+            </div>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{% url 'task-list' %}" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-success">Connect</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

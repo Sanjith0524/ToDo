@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.id|yesno:"Edit,New" }} Task - Todo Calendar{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ object.id|yesno:"Edit,New" }} Task</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+                        {{ form.title.errors }}
+                        <input type="text" name="{{ form.title.name }}" id="{{ form.title.id_for_label }}" 
+                               class="form-control {% if form.title.errors %}is-invalid{% endif %}" 
+                               value="{{ form.title.value|default:'' }}" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.due_date.id_for_label }}" class="form-label">Due Date</label>
+                        {{ form.due_date.errors }}
+                        <input type="datetime-local" name="{{ form.due_date.name }}" id="{{ form.due_date.id_for_label }}" 
+                               class="form-control {% if form.due_date.errors %}is-invalid{% endif %}" 
+                               value="{{ form.due_date.value|date:'Y-m-d\TH:i'|default:'' }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.priority.id_for_label }}" class="form-label">Priority</label>
+                        {{ form.priority.errors }}
+                        <select name="{{ form.priority.name }}" id="{{ form.priority.id_for_label }}" 
+                                class="form-select {% if form.priority.errors %}is-invalid{% endif %}">
+                            {% for value, text in form.priority.field.choices %}
+                                <option value="{{ value }}" {% if form.priority.value == value %}selected{% endif %}>
+                                    {{ text }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'task-list' %}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ task.title }} - Todo Calendar{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col">
+        <h1>{{ task.title }}</h1>
+    </div>
+    <div class="col-auto">
+        <div class="btn-group">
+            <a href="{% url 'task-update' task.pk %}" class="btn btn-outline-primary">Edit</a>
+            <a href="{% url 'task-complete' task.pk %}" class="btn btn-outline-{{ task.completed|yesno:"warning,success" }}">
+                {{ task.completed|yesno:"Reopen,Complete" }}
+            </a>
+            <a href="{% url 'task-delete' task.pk %}" class="btn btn-outline-danger">Delete</a>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4 priority-{{ task.priority }}">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Task Details</span>
+        <span class="badge {% if task.priority == 'high' %}bg-danger{% elif task.priority == 'medium' %}bg-warning text-dark{% else %}bg-success{% endif %}">
+            {{ task.get_priority_display }} Priority
+        </span>
+    </div>
+    <div class="card-body">
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Status:</div>
+            <div class="col-md-9">
+                <span class="badge {% if task.completed %}bg-success{% else %}bg-primary{% endif %}">
+                    {{ task.completed|yesno:"Completed,Active" }}
+                </span>
+            </div>
+        </div>
+        
+        {% if task.due_date %}
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">Due Date:</div>
+            <div class="col-md-9">{{ task.due_date|date:"F j, Y, g:i a" }}</div>
+        </div>
+        {% endif %}
+        
+        {% if task.google_event_id %}
+        <div class="row">
+            <div class="col-md-3 fw-bold">Google Calendar:</div>
+            <div class="col-md-9">
+                <span class="badge bg-info">Synced</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<a href="{% url 'task-list' %}" class="btn btn-outline-secondary">Back to List</a>
+{% endblock %}

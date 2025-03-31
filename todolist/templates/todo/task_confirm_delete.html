@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete {{ task.title }} - Todo Calendar{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col">
+        <h1>Delete Task</h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5>Are you sure you want to delete "{{ task.title }}"?</h5>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{% url 'task-detail' task.pk %}" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
